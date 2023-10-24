@@ -28,11 +28,10 @@ class _HomePageState extends State<HomePage> {
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -58,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: Icon(
                               Icons.keyboard_arrow_up,
-                              color: Colors.white,
+                              color: Color(0xA4FFFFFF),
                               size: 30,
                             ),
                           ),
@@ -84,6 +83,19 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 40),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'h',
+                                style: TextStyle(
+                                    fontSize: 16, color: Color(0xA4FFFFFF)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40),
                           child: ElevatedButton(
                             onPressed: () {
                               setState(() {
@@ -104,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Colors.white,
+                              color: Color(0xA4FFFFFF),
                               size: 30,
                             ),
                           ),
@@ -113,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Padding(
                       padding:
-                          const EdgeInsets.only(bottom: 8, left: 16, right: 0),
+                          const EdgeInsets.only(bottom: 30, left: 16, right: 0),
                       child: Text(
                         ':',
                         style: TextStyle(
@@ -154,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   child: Icon(
                                     Icons.keyboard_double_arrow_up,
-                                    color: Colors.white,
+                                    color: Color(0xA4FFFFFF),
                                     size: 30,
                                   ),
                                 ),
@@ -182,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   child: Icon(
                                     Icons.keyboard_arrow_up,
-                                    color: Colors.white,
+                                    color: Color(0xA4FFFFFF),
                                     size: 30,
                                   ),
                                 ),
@@ -220,10 +232,12 @@ class _HomePageState extends State<HomePage> {
                                   });
                                 },
                                 splashRadius: 16,
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
                                 icon: minutes > 0 || hours > 0
                                     ? Icon(
                                         Icons.cancel_rounded,
-                                        color: Colors.white,
+                                        color: Color(0xA4FFFFFF),
                                         size: 30,
                                       )
                                     : Icon(
@@ -234,6 +248,19 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 40),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'min',
+                                style: TextStyle(
+                                    fontSize: 16, color: Color(0xA4FFFFFF)),
+                              ),
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 40),
@@ -266,7 +293,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   child: Icon(
                                     Icons.keyboard_double_arrow_down,
-                                    color: Colors.white,
+                                    color: Color(0xA4FFFFFF),
                                     size: 30,
                                   ),
                                 ),
@@ -298,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   child: Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: Colors.white,
+                                    color: Color(0xA4FFFFFF),
                                     size: 30,
                                   ),
                                 ),
@@ -321,50 +348,60 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.all(4),
                           child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  if (hours > 0 || minutes > 0) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CountdownPage(
-                                          hours: hours,
-                                          minutes: minutes,
-                                        ),
+                            onPressed: () {
+                              setState(() {
+                                if (hours > 0 || minutes > 0) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CountdownPage(
+                                        hours: hours,
+                                        minutes: minutes,
                                       ),
-                                    );
-                                  }
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shadowColor: Colors.transparent,
-                                backgroundColor: Color(0xFF0C0C0C),
-                                minimumSize: Size(80, 62),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
+                                    ),
+                                  );
+                                }
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              shadowColor: Colors.transparent,
+                              backgroundColor: Color(0xFF0C0C0C),
+                              minimumSize: Size(80, 62),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
                               ),
-                              child: Text('Start')),
+                            ),
+                            child: Icon(
+                              Icons.play_arrow_rounded,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(4),
                           child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  cancelShutdown();
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shadowColor: Colors.transparent,
-                                backgroundColor: Color(0xFF0C0C0C),
-                                minimumSize: Size(80, 62),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
+                            onPressed: () {
+                              setState(() {
+                                cancelShutdown();
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              shadowColor: Colors.transparent,
+                              backgroundColor: Color(0xFF0C0C0C),
+                              minimumSize: Size(80, 62),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
                               ),
-                              child: Text('Cancel')),
+                            ),
+                            child: Icon(
+                              Icons.stop_rounded,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
                         ),
                       ],
                     ),

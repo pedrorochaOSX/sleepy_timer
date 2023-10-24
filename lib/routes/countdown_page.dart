@@ -13,10 +13,13 @@ class CountdownPage extends StatefulWidget {
 }
 
 class _CountdownPageState extends State<CountdownPage> {
+  final oneSecond = Duration(seconds: 1);
+
   int fullTime = 0;
   int minutes = 0;
   int seconds = 0;
   int hoursToMinutes = 0;
+  int pausedFullTime = 0;
   bool paused = false;
 
   void startShutdown() {
@@ -29,16 +32,19 @@ class _CountdownPageState extends State<CountdownPage> {
   void cancelShutdown() {
     const command = 'shutdown';
     final arguments = ['/a'];
-    fullTime = 0;
-
     Process.start(command, arguments);
+
+    fullTime = 0;
   }
 
   void pauseShutdown() {
     const command = 'shutdown';
     final arguments = ['/a'];
-
     Process.start(command, arguments);
+
+    paused = true;
+    pausedFullTime = fullTime;
+    fullTime = 0;
   }
 
   @override
@@ -52,8 +58,6 @@ class _CountdownPageState extends State<CountdownPage> {
     fullTime = minutes * 60;
 
     startShutdown();
-
-    const oneSecond = Duration(seconds: 1);
 
     Timer.periodic(oneSecond, (timer) {
       if (fullTime > 0) {
@@ -200,22 +204,85 @@ class _CountdownPageState extends State<CountdownPage> {
                         Padding(
                           padding: const EdgeInsets.all(4),
                           child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  cancelShutdown();
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shadowColor: Colors.transparent,
-                                backgroundColor: Color(0xFF0C0C0C),
-                                minimumSize: Size(80, 62),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
+                            onPressed: () {
+                              setState(() {
+                                if (paused == false) {
+                                  pauseShutdown();
+                                } else {
+                                  fullTime = pausedFullTime;
+                                  pausedFullTime = 0;
+                                  startShutdown();
+                                  Timer.periodic(oneSecond, (timer) {
+                                    if (fullTime > 0) {
+                                      setState(() {
+                                        if (seconds == 0) {
+                                          if (widget.minutes == 0) {
+                                            if (widget.hours > 0) {
+                                              widget.hours--;
+                                              widget.minutes = 59;
+                                            } else {
+                                              timer.cancel();
+                                              return;
+                                            }
+                                          } else {
+                                            widget.minutes--;
+                                          }
+                                          seconds = 59;
+                                        } else {
+                                          seconds--;
+                                        }
+                                        fullTime--;
+                                      });
+                                    } else {
+                                      timer.cancel();
+                                    }
+                                  });
+                                  paused = false;
+                                }
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              shadowColor: Colors.transparent,
+                              backgroundColor: Color(0xFF0C0C0C),
+                              minimumSize: Size(80, 62),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
                               ),
-                              child: Text('Cancel')),
+                            ),
+                            child: Icon(
+                              paused == false
+                                  ? Icons.pause_rounded
+                                  : Icons.play_arrow_rounded,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                cancelShutdown();
+                                Navigator.of(context).pop();
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              shadowColor: Colors.transparent,
+                              backgroundColor: Color(0xFF0C0C0C),
+                              minimumSize: Size(80, 62),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.stop_rounded,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -228,6 +295,4 @@ class _CountdownPageState extends State<CountdownPage> {
       ),
     );
   }
-
-  void appendMinute(int value) {}
 }
