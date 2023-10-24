@@ -7,8 +7,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('Sleepy timer');
-    setWindowMinSize(const Size(300, 400));
-    setWindowMaxSize(const Size(600, 800));
+    setWindowMinSize(const Size(450, 450));
+    setWindowMaxSize(const Size(450, 450));
   }
   runApp(const MyApp());
 }

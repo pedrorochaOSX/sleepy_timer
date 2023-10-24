@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:sleepy_timer/routes/countdown_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,8 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController hourEditController = TextEditingController();
-  final TextEditingController minuteEditController = TextEditingController();
+  int hours = 0;
+  int minutes = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -24,43 +25,78 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.all(16),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Hours TextField
+                    // Hours control
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: TextField(
-                            maxLines: 1,
-                            controller: hourEditController,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            cursorColor: Color(0xffffffff),
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white),
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.all(16),
-                              counterText: '',
-                              hintText: '00',
-                              hintStyle: TextStyle(
-                                color: Color(0x55ffffff),
-                              ),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 32),
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                hours += 1;
+                              });
+                            },
+                            splashRadius: 16,
+                            icon: Icon(
+                              Icons.keyboard_arrow_up,
+                              color: Colors.white,
+                              size: 30,
                             ),
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40),
+                          child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                shadowColor: Colors.transparent,
+                                backgroundColor: Colors.transparent,
+                                minimumSize: Size(80, 62),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child: Text(
+                                hours.toString().padLeft(2, '0'),
+                                style: TextStyle(
+                                    fontSize: 48, fontWeight: FontWeight.w600),
+                              )),
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 32),
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (hours >= 1) {
+                                      hours -= 1;
+                                    } else {
+                                      hours = 0;
+                                    }
+                                  });
+                                },
+                                splashRadius: 16,
+                                icon: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      padding:
+                          const EdgeInsets.only(bottom: 8, left: 4, right: 0),
                       child: Text(
                         ':',
                         style: TextStyle(
@@ -69,33 +105,148 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.white),
                       ),
                     ),
-                    // Minutes TextField
-                    Expanded(
-                      child: TextField(
-                        maxLines: 1,
-                        maxLength: 2,
-                        controller: minuteEditController,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        cursorColor: Color(0xffffffff),
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(16),
-                          counterText: '',
-                          hintText: '00',
-                          hintStyle: TextStyle(
-                            color: Color(0x55ffffff),
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
+
+                    // Minutes control
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 40),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (minutes >= 50) {
+                                      minutes -= 50;
+                                      hours++;
+                                    } else {
+                                      minutes += 10;
+                                    }
+                                  });
+                                },
+                                splashRadius: 16,
+                                icon: Icon(
+                                  Icons.keyboard_double_arrow_up,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (minutes >= 50) {
+                                      minutes = 0;
+                                      hours++;
+                                    } else {
+                                      minutes++;
+                                    }
+                                  });
+                                },
+                                splashRadius: 16,
+                                icon: Icon(
+                                  Icons.keyboard_arrow_up,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                shadowColor: Colors.transparent,
+                                backgroundColor: Colors.transparent,
+                                minimumSize: Size(80, 62),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child: Text(
+                                minutes.toString().padLeft(2, '0'),
+                                style: TextStyle(
+                                    fontSize: 48, fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  hours = 0;
+                                  minutes = 0;
+                                });
+                              },
+                              splashRadius: 16,
+                              icon: minutes > 0 || hours > 0
+                                  ? Icon(
+                                      Icons.cancel_rounded,
+                                      color: Colors.white,
+                                      size: 30,
+                                    )
+                                  : Icon(
+                                      Icons.cancel_rounded,
+                                      color: Colors.transparent,
+                                      size: 30,
+                                    ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 40),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (minutes >= 10) {
+                                      minutes -= 10;
+                                    } else {
+                                      if (hours > 0) {
+                                        minutes += 50;
+                                        hours--;
+                                      } else {
+                                        minutes = 0;
+                                      }
+                                    }
+                                  });
+                                },
+                                splashRadius: 16,
+                                icon: Icon(
+                                  Icons.keyboard_double_arrow_down,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (minutes >= 1) {
+                                      minutes--;
+                                    } else {
+                                      if (hours > 0) {
+                                        minutes = 59;
+                                        hours--;
+                                      } else {
+                                        minutes = 0;
+                                      }
+                                    }
+                                  });
+                                },
+                                splashRadius: 16,
+                                icon: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -108,130 +259,50 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(2.0),
+                          padding: const EdgeInsets.all(4),
                           child: ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  appendMinute(1);
+                                  if (hours > 0 || minutes > 0) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CountdownPage(
+                                          hours: hours,
+                                          minutes: minutes,
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 });
                               },
-                              child: Text('1')),
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                shadowColor: Colors.transparent,
+                                backgroundColor: Color(0xFF0C0C0C),
+                                minimumSize: Size(80, 62),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child: Text('Start')),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(2.0),
+                          padding: const EdgeInsets.all(4),
                           child: ElevatedButton(
                               onPressed: () {
-                                setState(() {
-                                  appendMinute(2);
-                                });
+                                setState(() {});
                               },
-                              child: Text('2')),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  appendMinute(3);
-                                });
-                              },
-                              child: Text('3')),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  appendMinute(4);
-                                });
-                              },
-                              child: Text('4')),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  appendMinute(5);
-                                });
-                              },
-                              child: Text('5')),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  appendMinute(6);
-                                });
-                              },
-                              child: Text('6')),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  appendMinute(7);
-                                });
-                              },
-                              child: Text('7')),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  appendMinute(8);
-                                });
-                              },
-                              child: Text('8')),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  appendMinute(9);
-                                });
-                              },
-                              child: Text('9')),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  appendMinute(0);
-                                });
-                              },
-                              child: Text('0')),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  hourEditController.text = '';
-                                  minuteEditController.text = '';
-                                });
-                              },
-                              child: Text('Clear')),
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                shadowColor: Colors.transparent,
+                                backgroundColor: Color(0xFF0C0C0C),
+                                minimumSize: Size(80, 62),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child: Text('Cancel')),
                         ),
                       ],
                     ),
@@ -245,22 +316,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void appendMinute(int value) {
-    minuteEditController.text += value.toString();
-    int currentMinutes = int.parse(minuteEditController.text);
-
-    if (currentMinutes > 60) {
-      int currentHours = currentMinutes ~/ 60;
-      currentMinutes = currentMinutes % 60;
-      hourEditController.text = currentHours.toString();
-
-      if (currentMinutes >= 10) {
-        minuteEditController.text = currentMinutes.toString();
-      } else {
-        minuteEditController.text = '0$currentMinutes';
-      }
-    } else {
-      minuteEditController.text = currentMinutes.toString();
-    }
-  }
+  void appendMinute(int value) {}
 }
