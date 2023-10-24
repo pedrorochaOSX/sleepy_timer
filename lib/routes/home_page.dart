@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:sleepy_timer/routes/countdown_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +12,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int hours = 0;
   int minutes = 0;
+
+  void cancelShutdown() {
+    const command = 'shutdown';
+    final arguments = ['/a'];
+
+    Process.start(command, arguments);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -291,7 +297,9 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.all(4),
                           child: ElevatedButton(
                               onPressed: () {
-                                setState(() {});
+                                setState(() {
+                                  cancelShutdown();
+                                });
                               },
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
