@@ -17,6 +17,7 @@ class _CountdownPageState extends State<CountdownPage> {
   int minutes = 0;
   int seconds = 0;
   int hoursToMinutes = 0;
+  bool paused = false;
 
   void startShutdown() {
     const command = 'shutdown';
@@ -26,6 +27,14 @@ class _CountdownPageState extends State<CountdownPage> {
   }
 
   void cancelShutdown() {
+    const command = 'shutdown';
+    final arguments = ['/a'];
+    fullTime = 0;
+
+    Process.start(command, arguments);
+  }
+
+  void pauseShutdown() {
     const command = 'shutdown';
     final arguments = ['/a'];
 
