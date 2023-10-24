@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                               IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    if (minutes >= 50) {
+                                    if (minutes == 59) {
                                       minutes = 0;
                                       hours++;
                                     } else {
