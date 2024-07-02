@@ -2,7 +2,7 @@
 
 ## Download the app
 
-#### [Windows](https://github.com/pedrorochaOSX/sleepy_timer/archive/refs/heads/windows-release-1.0.zip)
+#### [Windows](https://github.com/pedrorochaOSX/sleepy_timer/archive/refs/tags/windows-v1.0.zip)
 
 ## Running the project
 
